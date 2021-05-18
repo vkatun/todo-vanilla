@@ -2,21 +2,26 @@
 const field = document.querySelector(".field");
 const button = document.querySelector(".add");
 const list = document.querySelector(".list");
+
 function createTask(value) {
     
     const task = document.createElement("div");
+    task.textContent = value;
+    task.classList.add('task', 'unsuccess', 'list-group-item');
     const checkbox = document.createElement("input");
+    checkbox.type = 'checkbox';
+    checkbox.classList.add('status', 'form-check-input');
+    checkbox.addEventListener('click', completeTask);
     const button = document.createElement("input");
     button.type = 'button';
-    checkbox.type = 'checkbox';
-    checkbox.classList.add('status');
-    task.textContent = value;
-    task.classList.add('task', 'unsuccess');
-    checkbox.addEventListener('click', completeTask);
+    button.value = "-";
+    button.classList.add('btn-danger', 'btn', 'btn-primary', 'btn-sm');
+    button.addEventListener('click', deleteTask);
+    
+    
     task.appendChild(checkbox);
     task.appendChild(button);
-    button.value = "удалить задачу";
-    button.addEventListener('click', deleteTask);
+    
     return task;
 }
 function addTask() {
@@ -39,6 +44,12 @@ function completeTask(event) {
       }
     saveTasks();
 }
+function handleEnterDown(event) {
+  if (event.code === 'Enter') {
+    addTask();
+  }
+}
+
 function deleteTask(event) {
   const button = event.target
   const task = button.parentElement
@@ -68,6 +79,6 @@ loadedTasks.forEach(task => {
 
 
 button.addEventListener('click', addTask);
-
+field.addEventListener('keydown', handleEnterDown);
 
 document.addEventListener("DOMContentLoaded", loadTasks);
